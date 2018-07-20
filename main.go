@@ -13,16 +13,18 @@ var dir string
 
 var port int
 
+var build string
+
+var version string
+
 func main() {
-	// fmt.Println(os.Args)
-	// fmt.Println(strings.Contains("123a", "123"))
 	for _, p := range os.Args {
 		switch p {
 		case "-h":
-			fmt.Println("print help word")
+			fmt.Println("Usage of SimpleFileServer [-v] [-h] [--port=8000] [--dir=.]\n  -v\n        version number\n  --port int\n        listen http port (default 8000)\n  --dir string\n        listen file path (default .)")
 			return
 		case "-v":
-			fmt.Println("print version word")
+			fmt.Printf("SimpleFileServer for Linux/Mac/BSD, Version %s, Build %s.\n", version, build)
 			return
 		}
 		if strings.Contains(p, "--port=") {
@@ -31,7 +33,8 @@ func main() {
 				i, _ := strconv.Atoi(args[1])
 				port = i
 			}
-
+		} else {
+			port = 8000
 		}
 		if strings.Contains(p, "--dir=") {
 			args := strings.Split(p, "=")
@@ -44,10 +47,9 @@ func main() {
 				fmt.Println("dir does not exist")
 				return
 			}
+		} else {
+			dir = "."
 		}
-	}
-	if port == 0 {
-		port = 8000
 	}
 	fmt.Printf("listen port is %d\n", port)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), http.FileServer(http.Dir(dir)))
