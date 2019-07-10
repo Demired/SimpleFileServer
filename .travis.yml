@@ -4,4 +4,5 @@ go:
   - 1.10.3
 
 script:
-  - go build a -ldflags "-w -s -X main.build=`date '+%m/%d/%Y'` -X main.version=1.0"
+  - go test
+  - go build -a -ldflags "-w -s -X main.build=`date '+%m/%d/%Y'` -X main.version=1.0"
